@@ -18,106 +18,135 @@
 // SECOND APPROACH
 
 const FilterReducer = (state, action) => {
+
   switch (action.type) {
+            
+
     case "SET_FILTER_PRODUCTS":
+     
+let priceArr = action.payload.map((currElement)=>{
+  return currElement.price;
+})
+                                                             // 1st Way using math.max.apply|()
+// let newVal=Math.max.apply(Math,priceArr)
+// console.log(newVal)
+
+                                                             // 2nd Way using array.reduce
+
+    let maxPrice = priceArr.reduce((initialVal,currVal)=>Math.max(initialVal,currVal),0);
+
+                                                              // 3rd Way using spread operator
+//  let maxPrice= Math.max(...priceArr)
+//  console.log(maxPrice);
+
+
       return {
         ...state,
         filter_products: [...action.payload],
         all_products: [...action.payload],
+        filters:{...state.filters, maxPrice,price:maxPrice}
       };
     case "SET_GRID_VIEW":
       return {
         ...state,
         grid_view: true,
-      }
-      case "SET_List_VIEW":
-       return {
+      };
+    case "SET_List_VIEW":
+      return {
         ...state,
-        grid_view:false
-       }
-       case "SET_FILTER_LOADING":
-        return{
-          ...state,
-          isLoading:true
-        }
+        grid_view: false,
+      };
+    case "SET_FILTER_LOADING":
+      return {
+        ...state,
+        isLoading: true,
+      };
     case "SET_SORTING_PRODUCTS":
-   return {
-      ...state,
-      sorting_values:action.payload,
-      }
-      case "SORT_PRODUCTS":
-
-      const {filter_products,sorting_values}=state; 
-        let sortProducts;
-        let setSortProducts = [...filter_products] ;
-
-        const sortingProducts =(a,b)=>{
-            if(sorting_values==="highest"){
-              return b.price-a.price;
-            }
-            if(sorting_values==="lowest"){
-              return a.price-b.price;
-            }
-            if(sorting_values==="a-z"){
-              return a.name.localeCompare(b.name);
-              }
-            if(sorting_values==="z-a"){
-              return b.name.localeCompare(a.name);
-            }
-           
-            };
-            
-          sortProducts = setSortProducts.sort(sortingProducts)
-
-      return{
+      return {
         ...state,
-        filter_products:sortProducts,
+        sorting_values: action.payload,
+      };
+    case "SORT_PRODUCTS":
+      const { filter_products, sorting_values } = state;
+      let sortProducts;
+      let setSortProducts = [...filter_products];
 
+      const sortingProducts = (a, b) => {
+        if (sorting_values === "highest") {
+          return b.price - a.price;
+        }
+        if (sorting_values === "lowest") {
+          return a.price - b.price;
+        }
+        if (sorting_values === "a-z") {
+          return a.name.localeCompare(b.name);
+        }
+        if (sorting_values === "z-a") {
+          return b.name.localeCompare(a.name);
+        }
+      };
+
+      sortProducts = setSortProducts.sort(sortingProducts);
+
+      return {
+        ...state,
+        filter_products: sortProducts,
+      };
+    case "GET_SEARCH_PRODUCTS":
+      const { name, value } = action.payload;
+
+      return {
+        ...state,
+        filters: {
+          ...state.filters,
+          [name]: value,
+        },
+      };
+
+    case "FILTER_PRODUCTS":
+      let { all_products } = state;
+      let tempFilterProduct = [...all_products];
+
+      const { text, category, company,colors,price} = state.filters;
+      if (text) {
+        tempFilterProduct = tempFilterProduct.filter((currElement) => {
+          return currElement.name.toLowerCase().includes(text);
+        });
       }
-      case "GET_SEARCH_PRODUCTS":
-        const {name,value}=action.payload;
+      if (category!=="all" ) {
+        tempFilterProduct = tempFilterProduct.filter(
+          (currElement) =>  currElement.category.toLowerCase()=== category.toLowerCase()
+        );
+      }
 
-        return{
-          ...state,
-          filters:{
-            ...state.filters,
-            [name]:value
-          }
-        }
-
-        
-        case "FILTER_PRODUCTS":
-          let {all_products}=state;
-          let tempFilterProducts =[...all_products];
-
-          const {text,category}=state.filters;
-          if(text){
-            tempFilterProducts = tempFilterProducts.filter((currElement)=>{
-              return  currElement.name.toLowerCase().includes(text);
-          
-            })
-          }
-          if(category!=="all")
-            tempFilterProducts=tempFilterProducts.filter((currElement)=>{
-              return currElement.category===category;
-            })
-        return{
-          ...state,
-          filter_products:tempFilterProducts
-        }
-    
-        
+      if (company!=="all") {
+        tempFilterProduct = tempFilterProduct.filter(
+          (currElement) => currElement.company.toLowerCase() === company.toLowerCase()
+        );  
+      }
+      if (colors!=="all") {
+        tempFilterProduct = tempFilterProduct.filter(
+          (currElement) =>  currElement.colors.includes(colors)
+        );  
+      }
+      if(price===0){
+        tempFilterProduct=tempFilterProduct.filter((currElement)=>currElement.price===price)
+      }
+      else{
+        tempFilterProduct=tempFilterProduct.filter((currElement)=> currElement.price<=price
+        )
+      }
+      return {
+        ...state,
+        filter_products: tempFilterProduct,
+      };
 
     default:
       return state;
-    
-
   }
-    }
-
+};
 
 export default FilterReducer;
-
 
 // const FilterReducer = (state, action) => {
 //   switch (action.type) {
@@ -151,13 +180,9 @@ export default FilterReducer;
 // };
 // export default FilterReducer;
 
-
-
-
 // SORTING IN DIFFERENT WAYS
 // case "SORT_PRODUCTS":
 
-      
 // let sortProducts;
 // let setSortProducts = [...action.payload] ;
 
@@ -179,7 +204,6 @@ export default FilterReducer;
 //                 }
 //                 sortProducts = setSortProducts.sort(sortingProducts)
 //   }
-
 
 // return{
 // ...state,

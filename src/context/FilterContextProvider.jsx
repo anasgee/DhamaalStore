@@ -13,9 +13,12 @@ const initialState={
   sorting_values:"lowest",
   filters:{
     text:"",
-    company:"all",
     category:"all",
-    
+    company:"all",
+    colors:"all",
+    maxPrice:0,
+    price:0,
+    minPrice:0,
   }
 }
 
@@ -69,7 +72,7 @@ useEffect(()=>{
 };
 const useFilterContext=()=>{
   return useContext(FilterContext);
-}
+}  
 
 export default FilterContextProvider;
 export{useFilterContext};

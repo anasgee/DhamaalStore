@@ -1,26 +1,33 @@
 import React from "react";
 import styled from "styled-components";
-import {useFilterContext} from "../context/FilterContextProvider";
-
+import { useFilterContext } from "../context/FilterContextProvider";
+import {FaCheck} from "react-icons/fa";
+import PriceFormat from "../Helper/PriceFormat"
 
 const FilterSection = () => {
   const {
     searchFilter,
-    filters: { text, category },
+    filters: { text, category, company, colors,price,minPrice,maxPrice },
     all_products,
   } = useFilterContext();
 
-  
-// getUniqueData from api through allProducts that have been get from useFilterContext
-const getUniqueData = (data, property) => {
-  let newVal = data.map((currElement) => {
-    return currElement[property];
-  });
-return(  newVal = ["All", ...new Set(newVal)]);
-};
+  // getUniqueData from api through allProducts that have been get from useFilterContext
+  const getUniqueData = (data, property) => {
+    let newVal = data.map((currElement) => {
+      return currElement[property];
+    });
+    if (property === "colors") {
+      // return (
+      // newVal= ["all",...new Set([].concat(...newVal))                    we can also do it with flat function
+      // );
+      newVal = newVal.flat();
+    }
+    return (newVal = ["all", ...new Set(newVal)]);
+  };
 
-const uniqueData = getUniqueData(all_products, "category");
-  
+  const categoryData = getUniqueData(all_products, "category");
+  const companyData = getUniqueData(all_products, "company");
+  const colorsData = getUniqueData(all_products, "colors");
 
   return (
     <Wrapper>
@@ -39,8 +46,7 @@ const uniqueData = getUniqueData(all_products, "category");
       <div className="filter-category">
         <h3>Category</h3>
         <div>
-          {
-            uniqueData.map((currElement, index) => {
+          {categoryData.map((currElement, index) => {
             return (
               <button
                 type="button"
@@ -54,6 +60,76 @@ const uniqueData = getUniqueData(all_products, "category");
             );
           })}
         </div>
+      </div>
+
+      <div className="filter-company">
+        <h3>Company</h3>
+        <form onSubmit={(e) => e.preventDefault()} action="#">
+          <select
+            name="company"
+            id="company"
+            className="filter-company--select"
+            onClick={searchFilter}
+          >
+            {companyData.map((currElement, index) => {
+              return (
+                <option key={index} name="company" value={currElement}>
+                  {currElement}
+                </option>
+              );
+            })}
+          </select>
+        </form>
+      </div>
+
+      {/* Colors section in e-commerce react jsx website */}
+
+      <div className="filter-colors colors">
+        <h3>Colors</h3>
+        <div className="filter-color-style">
+          {colorsData.map((currColor, index) => {
+            if(currColor==="all"){
+              return(
+                <button
+                className="color-all--style"
+                value={currColor}
+                name="colors"
+                onClick={searchFilter}
+                >
+                All
+
+                </button>
+              )
+            }
+            return (
+              <button
+                key={index}
+                type="button"
+                value={currColor}
+                name="colors"
+                style={{ backgroundColor: currColor }}
+                className={colors===currColor?"btnStyle active":"btnStyle"}
+                onClick={searchFilter}
+              >
+                {colors === currColor ? <FaCheck className="checkStyle"/> : null}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="filter-price">
+      <h3>Price</h3>
+
+      <p><PriceFormat price={price}/></p>
+      <input
+          type="range"
+          name="price"
+          min={minPrice}
+          max={maxPrice}
+          value={price}
+          onChange={searchFilter}
+        />
       </div>
     </Wrapper>
   );

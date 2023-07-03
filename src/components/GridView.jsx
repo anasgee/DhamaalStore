@@ -2,6 +2,7 @@ import React from 'react';
 import Product from './Product';
 import styled from "styled-components"
 import { useFilterContext } from '../context/FilterContextProvider';
+import PriceFormat from '../Helper/PriceFormat';
 
 const GridView = ({products}) => {
 
@@ -10,7 +11,7 @@ return (<Wrapper className="section">
             <div className='container grid grid-three-column'>
                {
                 products.map((currElement)=>{
-                    return <Product key={currElement.id} {...currElement}/>
+                    return <Product key={currElement.id} {...currElement} />
                 })}
             </div>
 

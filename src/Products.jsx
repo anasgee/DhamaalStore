@@ -3,7 +3,7 @@ import styled from "styled-components";
 import FilterSection from "./components/FilterSection";
 import Sort from "./components/Sort";
 import ProductList from "./components/ProductList";
-import { useFilterContext } from "./context/FilterContextProvider";
+
 
 const Products=()=> {
 
@@ -31,6 +31,9 @@ const Products=()=> {
   );
 };
 const Wrapper = styled.section`
+.card-data--price{
+  color:green;
+}
   .grid-filter-column {
     grid-template-columns: 0.2fr 1fr;
   }
