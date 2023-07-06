@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { useFilterContext } from "../context/FilterContextProvider";
 import {FaCheck} from "react-icons/fa";
-import PriceFormat from "../Helper/PriceFormat"
+import PriceFormat from "../Helper/PriceFormat";
+import {Button} from "../styles/Button";
 
 const FilterSection = () => {
   const {
     searchFilter,
     filters: { text, category, company, colors,price,minPrice,maxPrice },
-    all_products,
+    all_products,clearFilters
   } = useFilterContext();
 
   // getUniqueData from api through allProducts that have been get from useFilterContext
@@ -91,6 +92,7 @@ const FilterSection = () => {
             if(currColor==="all"){
               return(
                 <button
+                key={index}
                 className="color-all--style"
                 value={currColor}
                 name="colors"
@@ -131,6 +133,14 @@ const FilterSection = () => {
           onChange={searchFilter}
         />
       </div>
+     
+      
+      <div className="filter-clear">
+        <Button className="btn" onClick={clearFilters}>
+          Clear Filters
+        </Button>
+      </div>
+
     </Wrapper>
   );
 };
@@ -223,6 +233,7 @@ const Wrapper = styled.section`
   .filter-clear .btn {
     background-color: #ec7063;
     color: #000;
+    cursor:pointer;
   }
 `;
 

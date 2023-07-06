@@ -7,7 +7,9 @@ import { useFilterContext } from '../context/FilterContextProvider';
 const Sort = () => {
 
   const {grid_view, filter_products,setGridView,setListView,sortings,isLoading}=useFilterContext();
- 
+ if(isLoading){
+  return <div style={{color:"red", display:"flex",justifyContent:"center",alignItems:"center",heigh:"100vh"}}>......Please Wait</div>
+ }
 
 
   return <Wrapper className="sort-section">

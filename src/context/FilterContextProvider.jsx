@@ -56,17 +56,22 @@ const searchFilter=(e)=>{
   dispatch({type:"GET_SEARCH_PRODUCTS", payload:{name,value}})
 }
 
-  useEffect(()=>{
+const clearFilters=()=>{
+  dispatch({type:"CLEAR_FILTERS"})
+}
+
+useEffect(()=>{
+  
     dispatch({type:"FILTER_PRODUCTS"})
      dispatch({type:"SORT_PRODUCTS"})
-  },[state.sorting_values,state.filters])
+  },[products,state.sorting_values,state.filters])
 
 useEffect(()=>{
   dispatch({type:"SET_FILTER_PRODUCTS",payload:products})
 },[products])
   return (
    <>
-          <FilterContext.Provider value={{...state,setGridView,setListView,sortings,searchFilter,}}>{children}</FilterContext.Provider>
+          <FilterContext.Provider value={{...state,setGridView,setListView,sortings,searchFilter,clearFilters}}>{children}</FilterContext.Provider>
    </>
   )
 };

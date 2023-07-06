@@ -7,6 +7,11 @@ import { useFilterContext } from '../context/FilterContextProvider';
 
 const ListView = ({products}) => {
 
+ const {isLoading}=useFilterContext();
+
+ if(isLoading){
+  return <div style={{color:"red", display:"flex",justifyContent:"center",alignItems:"center",height:"100vh"}}>......Please Wait</div>
+ }
 
   return (
     <Wrapper>

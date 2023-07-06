@@ -15,9 +15,7 @@
   
   const SingleProduct = () => {
     const { getSingleProduct, isSingleLoading, singleProduct } =
-      useProductContext();
-
-  
+      useProductContext();  
     const { id } = useParams();
   
     const {
@@ -34,6 +32,7 @@
   
     useEffect(() => {
       getSingleProduct(`${API}?id=${id}`);
+      // getSingleProduct(API);
     }, []);
   
     if (isSingleLoading) {

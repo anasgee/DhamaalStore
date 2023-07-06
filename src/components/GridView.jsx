@@ -5,8 +5,11 @@ import { useFilterContext } from '../context/FilterContextProvider';
 import PriceFormat from '../Helper/PriceFormat';
 
 const GridView = ({products}) => {
+ const {isLoading}=useFilterContext();
 
-
+ if(isLoading){
+  return <div style={{color:"red", display:"flex",justifyContent:"center",alignItems:"center",height:"100vh"}}>......Please Wait</div>
+ }
 return (<Wrapper className="section">
             <div className='container grid grid-three-column'>
                {
