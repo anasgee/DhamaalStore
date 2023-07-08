@@ -3,11 +3,12 @@
 
 ### To run This project On Your System
 
-1. # ** __ Clone This repo.
+1. Clone The App 
+#  git clone (url).
 
 2. Then Run:
- # ** __ npm install react
+ # npm install react
 
  Node Modules will be installed and updated react will installed on your repo.
  Now enjoy it and chill this e-commerce store
-      
+  # Follow me And Subscribe My YT CHannel🤣😂
