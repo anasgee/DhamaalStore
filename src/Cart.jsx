@@ -1,10 +1,22 @@
 import React from "react";
 import { useCartContext } from "./context/CartContext";
 import styled from "styled-components";
+import CartItem from "./components/CartItem";
+import { NavLink } from "react-router-dom";
+import { Button } from "./styles/Button";
+import PriceFormat from "./Helper/PriceFormat";
 
 const Cart = () => {
-  const { cart } = useCartContext();
-  console.log(cart);
+  const { cart, clearCart, total_price, shipping_fee } = useCartContext();
+
+  if (cart.length === 0) {
+    return (
+      <EmptyDiv className="no-items">
+        <h3>No items in Cart</h3>
+      </EmptyDiv>
+    );
+  }
+
   return (
     <Wrapper>
       <div className="container">
@@ -15,11 +27,61 @@ const Cart = () => {
           <p className="cart-hide">SubTotal</p>
           <p>Remove</p>
         </div>
-          <hr/>
+        <hr />
+        {/* Image */}
+        <div className="cart-item">
+          {cart.map((currElement) => {
+            return <CartItem key={currElement.id} {...currElement} />;
+          })}
+        </div>
+        <hr />
+        <div className="cart-two-button">
+          <NavLink to="/products">
+            <Button>Continue Shopping</Button>
+          </NavLink>
+          <Button onClick={clearCart} className="btn btn-clear">
+            Clear Cart
+          </Button>
+        </div>
+        <div className="order-total--amount">
+          <div className="order-total--subdata">
+            <div>
+              <p>subtotoal:</p>
+              <p>
+                <PriceFormat price={total_price} />
+              </p>
+            </div>
+            <div>
+              <p>Shipping fee:</p>
+              <p>
+                <PriceFormat price={shipping_fee} />
+              </p>
+            </div>
+            <hr/>
+            <div>
+              <p>order total:</p>
+              <p>
+                <PriceFormat price={shipping_fee + total_price} />
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </Wrapper>
   );
 };
+const EmptyDiv = styled.section`
+  padding: 5rem;
+  h3 {
+    display: flex;
+    color: red;
+    font-weight: bolder;
+    font-size: 4rem;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+  }
+`;
 const Wrapper = styled.section`
   padding: 9rem 0;
 

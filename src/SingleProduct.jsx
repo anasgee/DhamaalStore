@@ -17,7 +17,6 @@
     const { getSingleProduct, isSingleLoading, singleProduct } =
       useProductContext();  
     const { id } = useParams();
-  
     const {
       id: alias,
       name,
