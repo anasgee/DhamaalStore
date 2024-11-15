@@ -9,7 +9,7 @@ import PriceFormat from "./Helper/PriceFormat";
 const Cart = () => {
   const { cart, clearCart, total_price, shipping_fee } = useCartContext();
 
-  if (cart.length === 0) {
+  if (cart.length === 0 ) {
     return (
       <EmptyDiv className="no-items">
         <h3>No items in Cart</h3>

@@ -1,11 +1,14 @@
 const CartReducer = (state, action) => {
   switch (action.type) {
     case "ADD_TO_CART":
+   
       let { id, color, amount, product } = action.payload;
 
       let existingItem = state.cart.find((currElement) => {
         return currElement.id === id + color;
       });
+      
+    
 
       if (existingItem) {
         let updatedItem = state.cart.map((currElement) => {
@@ -120,6 +123,7 @@ const CartReducer = (state, action) => {
                             // WE CAN ALSO SIMPLIFY THE ABOVE REDUCER METHOD CODE WITH FOLLOWING
 
     case "CART_TOTAL_ITEMS_PRICE":
+  
       let { total_item, total_price } = state.cart.reduce(
         (accumulator, currElement) => {
           let { price, amount } = currElement;
